@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        changeBothWallpaperButton = findViewById(R.id.change_both_wallpaper_btn);
+        /*changeBothWallpaperButton = findViewById(R.id.change_both_wallpaper_btn);
         changeBothWallpaperButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         wallpaperManager = WallpaperManager.getInstance(this);
         mHandlerThread = new MyHandlerThread("Wallpaper thread", Thread.NORM_PRIORITY);
         mHandlerThread.start();
-        mHandlerThread.prepareHandler();
+        mHandlerThread.prepareHandler();*/
+        BingWallpaperDownloadService.start(this);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Log.e(TAG, "UIThread Thread id: " + Thread.currentThread().getName());
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        res.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+                        res.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         InputStream resIs = new ByteArrayInputStream(stream.toByteArray());
                         Log.e(TAG, "mHandlerThread mHandlerThread Thread id: " + Thread.currentThread().getName());
                         wallpaperManager.setStream(resIs, null, false, reqCode);
