@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -93,14 +94,18 @@ public class MyWallpaperManager {
         Bitmap res = Bitmap.createBitmap(bitmap, 0, 0, bw, bh, matrix, true);
         int aw = res.getWidth();
         int ah = res.getHeight();
+        Log.e(TAG, "w: " + aw + ", h: " + ah);
         mHandlerThread.postTask(() -> {
             try {
                 Log.e(TAG, "UIThread Thread id: " + Thread.currentThread().getName());
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1080, 2280, true);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                if (res.compress(Bitmap.CompressFormat.JPEG, 100, stream)) {
-                    InputStream resIs = new ByteArrayInputStream(stream.toByteArray());
+                if (scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)) {
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(stream.toByteArray());
                     Log.e(TAG, "mHandlerThread mHandlerThread Thread id: " + Thread.currentThread().getName());
-                    wallpaperManager.setStream(resIs, null, false, reqCode);
+                    //wallpaperManager.setWallpaperOffsetSteps(1, 0);
+                    wallpaperManager.setStream(inputStream, null, true, reqCode);
+                    wallpaperManager.setWallpaperOffsetSteps(0.5f, 0);
                 } else {
                     wallpaperManager.setBitmap(bitmap, null, false, reqCode);
                 }
