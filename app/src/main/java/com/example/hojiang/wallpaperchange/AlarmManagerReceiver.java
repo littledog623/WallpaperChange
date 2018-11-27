@@ -3,8 +3,11 @@ package com.example.hojiang.wallpaperchange;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class AlarmManagerReceiver extends BroadcastReceiver {
+
+    private static final String TAG = AlarmManagerReceiver.class.getSimpleName();
 
     public static final int NoExtra = -1;
     public static final int ProductStatusLog = 0;
@@ -20,12 +23,8 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int alarmType = intent.getIntExtra(KEY_ALARM_TYPE, NoExtra);
-
-        switch (alarmType) {
-            case BingDownloadTask:
-                BingWallpaperDownloadService.start(context);
-                break;
-        }
+        Log.e(TAG, "onAlarmReceive");
+        MyWallpaperManager.getInstance().onNewBingWallpaperDownloaded(context);
 
     }
 }
